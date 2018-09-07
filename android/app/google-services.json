@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "693997227255",
+    "firebase_url": "https://perecrestovhabitat.firebaseio.com",
+    "project_id": "perecrestovhabitat",
+    "storage_bucket": "perecrestovhabitat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693997227255:android:c5cb4c6905a7dc36",
+        "android_client_info": {
+          "package_name": "com.example.homenet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "693997227255-ro4eeih38cdaddcmeksghh9s1giqlc80.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwKPJe2dvVmzPxlVeoopQ-EBa26Hgi_aA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
