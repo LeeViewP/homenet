@@ -37,18 +37,18 @@ class HomeNetDrawerState extends State<HomeNetDrawer>
                     title: Text("Sensors"),
                     onTap: () {
                       Navigator.of(context).pop();
-                      Navigator.of(context).pushReplacementNamed(SensorView.routeName);
+                      Navigator.of(context).pushNamed(SensorView.routeName);
                     },
                   ),
                   new Divider(),
                   new ListTile(
-            leading: Icon(Icons.settings),
-            title: Text("Settings"),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pushNamed(SettingsView.routeName);
-            },
-          ),
+                    leading: Icon(Icons.settings),
+                    title: Text("Settings"),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamed(SettingsView.routeName);
+                      },
+                    ),
           ])
           );
  }
