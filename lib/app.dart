@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './views/splash.dart';
 import './views/dashboardview.dart';
 import './views/sensorsView.dart';
 import './views/settingsview.dart';
@@ -29,12 +30,14 @@ class HomeNet extends StatelessWidget {
 					)
 				)
 			),
+      // home:new Splash(),
 			initialRoute: '/',
       routes: <String, WidgetBuilder> {
         HomeView.routeName:  (BuildContext context) => new HomeView(),
         DashboardView.routeName: (BuildContext context) => new DashboardView(),
         SensorsView.routeName: (BuildContext context) => new SensorsView(),
         SettingsView.routeName: (BuildContext context) => new SettingsView(),
+        // "/":(BuildContext context) => new Splash(),
         // SensorsViewModel.routeName:(BuildContext context)=>new SensorsViewModel(),
         // SensorDetails.routeName: (BuildContext context)=> new SensorDetails(),
 			}

@@ -9,31 +9,32 @@ class SensorPinnedMetric extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    Row _buildMetricAsIcon(IconData icon, DateTime lastActivity) {
-      return new Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+    Widget _buildMetricAsIcon(IconData icon, DateTime lastActivity) {
+      return
+          // new Row(
+          //   mainAxisSize: MainAxisSize.min,
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
           new Container(
-            // margin: const EdgeInsets.only(
-            //   top: 8.0,
-            //   bottom: 8.0,
-            //   left: 0.0,
-            // ),
-            child: IconButton( icon: new Icon(icon,
-                size: Theme.of(context).textTheme.subhead.fontSize),
-                onPressed: (){},
-                )
-          ),
-        ],
+        margin: const EdgeInsets.only(
+          top: 8.0,
+          bottom: 8.0,
+          left: 0.0,
+        ),
+        child:
+            new Icon(icon, size: Theme.of(context).textTheme.subhead.fontSize),
+        //   ),
+        // ],
       );
     }
 
-    FlatButton _buildMetricAsText(String label, String unit, DateTime lastActivity) {
+    Widget _buildMetricAsText(
+        String label, String unit, DateTime lastActivity) {
       //Color color = Theme.of(context).primaryColor;
       double fontSize = Theme.of(context).textTheme.caption.fontSize;
-      return  FlatButton(child: new Row(
+      return
+          // FlatButton(child:
+          new Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -68,15 +69,38 @@ class SensorPinnedMetric extends StatelessWidget {
             ),
           )
         ],
-      ),
-      onPressed: (){},
+        // ),
+        // onPressed: (){},
       );
     }
 
-    
-    if (metricModel.id == 'M')
-      return _buildMetricAsIcon(MdiIcons.runFast, metricModel.updated);
-    return _buildMetricAsText(
-        metricModel.value.toString(), metricModel.unit, metricModel.updated);
+    return new GestureDetector(
+        child: (metricModel.id == 'M')
+            ? _buildMetricAsIcon(MdiIcons.runFast, metricModel.updated)
+            : _buildMetricAsText(metricModel.value.toString(), metricModel.unit,
+                metricModel.updated),
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              var title = metricModel.label;
+              var value = metricModel.value;
+              return AlertDialog(
+                title: new Text("Alert Dialog $title"),
+                content: new Text("$value"),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  new FlatButton(
+                    child: new Text("Close"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        });
   }
 }

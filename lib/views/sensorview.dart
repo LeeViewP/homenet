@@ -290,27 +290,49 @@ class SensorViewState extends State<SensorView> {
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0.0,
         iconTheme: IconThemeData(color: theme.primaryColor),
-      ),
-      body: _buildDetails(),
-      floatingActionButton: showSave
-          ? new FloatingActionButton(
-              child: const Icon(Icons.save),
-              onPressed: () {
-                if (widget.sensor.descr != descrController.text)
-                  sService.update<String>(
-                      widget.sensor.id, 'descr', descrController.text);
-                if (widget.sensor.label != labelController.text)
-                  sService.update<String>(
-                      widget.sensor.id, 'label', labelController.text);
-                if (widget.sensor.type != typeController.text)
-                  sService.update<String>(
-                      widget.sensor.id, 'type', typeController.text);
-
-                showSave = false;
-                Navigator.pop(context);
-              },
-            )
-          : null,
-    );
+        actions: <Widget>[
+          PopupMenuButton<String>(
+             onSelected: showMenuSelection,
+                         itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
+                           const PopupMenuItem<String>(
+                             value: 'DELETE',
+                             child: ListTile(
+                                 leading: Icon(Icons.delete),
+                                 title: Text('Delete sensor'),
+                                 )
+                           ),
+                         ],)
+                     ],
+                   ),
+                   body: _buildDetails(),
+                   floatingActionButton: showSave
+                       ? new FloatingActionButton(
+                           child: const Icon(Icons.save),
+                           onPressed: () {
+                             if (widget.sensor.descr != descrController.text)
+                               sService.update<String>(
+                                   widget.sensor.id, 'descr', descrController.text);
+                             if (widget.sensor.label != labelController.text)
+                               sService.update<String>(
+                                   widget.sensor.id, 'label', labelController.text);
+                             if (widget.sensor.type != typeController.text)
+                               sService.update<String>(
+                                   widget.sensor.id, 'type', typeController.text);
+             
+                             showSave = false;
+                             Navigator.pop(context);
+                           },
+                         )
+                       : null,
+                 );
+               }
+             
+               void showMenuSelection(String value) {
+                 switch(value){
+                   case 'DELETE':
+                    sService.delete(widget.sensor);
+                    Navigator.pop(context);
+                   break;
+                 }
   }
 }
