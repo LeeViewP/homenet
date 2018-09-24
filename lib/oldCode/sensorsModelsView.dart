@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './sensorCard.dart';
 import '../services/sensorsService.dart';
 import '../model/sensorModel.dart';
 
@@ -33,22 +34,19 @@ class SensorsViewModelState extends State<SensorsViewModel> {
         margin: const EdgeInsets.all(24.0),
         child: new ListView.builder(
           itemBuilder: (BuildContext context, int index) =>
-              new SensorViewModelItemItem(sensors[index]),
+              new SensorCard(sensors[index]),
           itemCount: sensors == null ? 0 : sensors.length,
         ));
   }
 }
 
-class SensorViewModelItemItem extends StatelessWidget {
-  SensorViewModelItemItem(this.sensorModel);
-  final SensorModel sensorModel;
+// class SensorViewModelItem extends StatelessWidget {
+//   SensorViewModelItem(this.sensorModel);
+//   final SensorModel sensorModel;
 
-  @override
-  Widget build(BuildContext context) {
-    return new Card(
-        child: new ListTile(
-      title: new Text(sensorModel.label),
-      subtitle: new Text(sensorModel.descr),
-    ));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return new SensorCard(sensorModel);
+    
+//   }
+// }

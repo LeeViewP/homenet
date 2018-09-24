@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import './drawerhomenet.dart';
-import 'package:flutter/rendering.dart';
+// import 'package:flutter/cupertino.dart';
+// import './drawerhomenet.dart';
+// import 'package:flutter/rendering.dart';
 import './dashboardview.dart';
-import './sensorview.dart';
+import './sensorsView.dart';
 import './settingsview.dart';
-import './sensorsModelsView.dart';
+// import './sensorsModelsView.dart';
 
 class HomeView extends StatefulWidget {
   static String routeName = '/';
@@ -16,9 +16,9 @@ class HomeView extends StatefulWidget {
 class HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   int _currentIndex = 0;
   Widget dashboardView = new DashboardView();
-  Widget sensorsView = new SensorView();
+  Widget sensorsView = new SensorsView();
   Widget settingsView =  new SettingsView();
-  Widget sensoView = new SensorsViewModel();
+  // Widget sensoView = new SensorsViewModel();
   
   BottomNavigationBarItem dashboardItem = new BottomNavigationBarItem(
             icon: new Icon(Icons.dashboard),
@@ -32,10 +32,10 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             icon: new Icon(Icons.settings),
             title: new Text("Settings"),
           );
- BottomNavigationBarItem sensoItem = new BottomNavigationBarItem(
-            icon: new Icon(Icons.kitchen),
-            title: new Text("Sense"),
-          );
+//  BottomNavigationBarItem sensoItem = new BottomNavigationBarItem(
+//             icon: new Icon(Icons.kitchen),
+//             title: new Text("Sense"),
+//           );
 
   final List<Widget> _navigationPages = new List<Widget>();
   final List<BottomNavigationBarItem> _navigationItems = new List<BottomNavigationBarItem>();
@@ -49,11 +49,11 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     _navigationItems.add(sensorsItem);
     _navigationPages.add(sensorsView);
 
-    // _navigationItems.add(settingsItem);
-    // _navigationPages.add(settingsView);
+    _navigationItems.add(settingsItem);
+    _navigationPages.add(settingsView);
 
-    _navigationItems.add(sensoItem);
-    _navigationPages.add(sensoView);
+    // _navigationItems.add(sensoItem);
+    // _navigationPages.add(sensoView);
     _currentIndex=1;
 }
   Widget build(BuildContext context) {

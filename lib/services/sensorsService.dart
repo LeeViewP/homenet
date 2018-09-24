@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../model/sensorModel.dart';
 
 class SensorService {
@@ -21,28 +20,31 @@ class SensorService {
     }).toList();
   }
 
-  Future<void> deleteSensor(SensorModel sensor) async{
+  Future<void> delete(SensorModel sensor) async{
     //Delete the metrics first???
     
     await collectionReference.document(sensor.id).delete();
 
   }
 
-  Future<Null> updateSensor(SensorModel sensor) async{
-    DocumentReference documentReference = collectionReference.document(sensor.id);
+  Future<Null> update<T>(String sensorId, String property, T value) async { 
+    DocumentReference documentReference = collectionReference.document(sensorId);
     Firestore.instance.runTransaction((transaction) async{
       
       //Get Document snapshoot
         DocumentSnapshot freshSnapshoot = await transaction.get(documentReference);
-        await transaction.update(freshSnapshoot.reference, {});
+            await transaction.update(freshSnapshoot.reference, {property: value});
+
+
+          // if (freshSnapshoot.data['descr'].toString() != sensor.descr)
+          //   await transaction.update(freshSnapshoot.reference, {'descr': sensor.descr});
+
+          // if (freshSnapshoot.data['label'].toString() != sensor.label)
+          //   await transaction.update(freshSnapshoot.reference, {'label': sensor.label});
+
+          // if (freshSnapshoot.data['type'].toString() != sensor.type)
+          //   await transaction.update(freshSnapshoot.reference, {'type': sensor.type});
     });
-    // Firestore.instance.runTransaction((transaction) async {
-    //                     DocumentSnapshot freshSnap =
-    //                         await transaction.get(document.reference);
-    //                     await transaction
-    //                         .update(freshSnap.reference, {'graph': !graph});
-    //                   }));
-    Null n = collectionReference.
   }
 void addChangesListener(fn){
   // CollectionReference reference =Firestore.instance.collection('sensors');

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './views/app.dart';
+import './app.dart';
 
 void main() => runApp(new HomeNet());
 

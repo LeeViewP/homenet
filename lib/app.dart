@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import './dashboardview.dart';
-import './sensorview.dart';
-import './settingsview.dart';
-import './homeview.dart';
-import './sensorsModelsView.dart';
+import './views/dashboardview.dart';
+import './views/sensorsView.dart';
+import './views/settingsview.dart';
+import './views/homeview.dart';
+// import './sensorsModelsView.dart';
 
 class HomeNet extends StatelessWidget {
 	@override
@@ -33,9 +33,9 @@ class HomeNet extends StatelessWidget {
       routes: <String, WidgetBuilder> {
         HomeView.routeName:  (BuildContext context) => new HomeView(),
         DashboardView.routeName: (BuildContext context) => new DashboardView(),
-        SensorView.routeName: (BuildContext context) => new SensorView(),
+        SensorsView.routeName: (BuildContext context) => new SensorsView(),
         SettingsView.routeName: (BuildContext context) => new SettingsView(),
-        SensorsViewModel.routeName:(BuildContext context)=>new SensorsViewModel(),
+        // SensorsViewModel.routeName:(BuildContext context)=>new SensorsViewModel(),
         // SensorDetails.routeName: (BuildContext context)=> new SensorDetails(),
 			}
 		);
