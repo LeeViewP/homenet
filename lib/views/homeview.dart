@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import './dashboardview.dart';
 import './sensorview.dart';
 import './settingsview.dart';
+import './sensorsModelsView.dart';
 
 class HomeView extends StatefulWidget {
   static String routeName = '/';
@@ -17,6 +18,7 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   Widget dashboardView = new DashboardView();
   Widget sensorsView = new SensorView();
   Widget settingsView =  new SettingsView();
+  Widget sensoView = new SensorsViewModel();
   
   BottomNavigationBarItem dashboardItem = new BottomNavigationBarItem(
             icon: new Icon(Icons.dashboard),
@@ -30,7 +32,10 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             icon: new Icon(Icons.settings),
             title: new Text("Settings"),
           );
-
+ BottomNavigationBarItem sensoItem = new BottomNavigationBarItem(
+            icon: new Icon(Icons.kitchen),
+            title: new Text("Sense"),
+          );
 
   final List<Widget> _navigationPages = new List<Widget>();
   final List<BottomNavigationBarItem> _navigationItems = new List<BottomNavigationBarItem>();
@@ -44,8 +49,11 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     _navigationItems.add(sensorsItem);
     _navigationPages.add(sensorsView);
 
-    _navigationItems.add(settingsItem);
-    _navigationPages.add(settingsView);
+    // _navigationItems.add(settingsItem);
+    // _navigationPages.add(settingsView);
+
+    _navigationItems.add(sensoItem);
+    _navigationPages.add(sensoView);
     _currentIndex=1;
 }
   Widget build(BuildContext context) {

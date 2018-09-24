@@ -3,7 +3,7 @@ import './dashboardview.dart';
 import './sensorview.dart';
 import './settingsview.dart';
 import './homeview.dart';
-// import './sensordetails.dart';
+import './sensorsModelsView.dart';
 
 class HomeNet extends StatelessWidget {
 	@override
@@ -35,6 +35,7 @@ class HomeNet extends StatelessWidget {
         DashboardView.routeName: (BuildContext context) => new DashboardView(),
         SensorView.routeName: (BuildContext context) => new SensorView(),
         SettingsView.routeName: (BuildContext context) => new SettingsView(),
+        SensorsViewModel.routeName:(BuildContext context)=>new SensorsViewModel(),
         // SensorDetails.routeName: (BuildContext context)=> new SensorDetails(),
 			}
 		);
