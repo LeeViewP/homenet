@@ -10,6 +10,7 @@ class HomeNet extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {
 		return new MaterialApp(
+			debugShowCheckedModeBanner: false,
 			title: 'homeNet.ai',
 			theme: new ThemeData(
         // This is the theme of your application.
