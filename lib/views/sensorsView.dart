@@ -18,6 +18,7 @@ class SensorsViewState extends State<SensorsView> {
     sensorService.addChangesListener((snapshot) {
       updateSensors();
     });
+   
   }
 
   void updateSensors() {
@@ -39,7 +40,7 @@ class SensorsViewState extends State<SensorsView> {
         iconTheme: IconThemeData( color: theme.primaryColor),
       ),
       body: new Container(
-        margin: const EdgeInsets.all(24.0),
+        margin: const EdgeInsets.all(4.0),
         child: new ListView.builder(
           itemBuilder: (BuildContext context, int index) =>
               new SensorCard(sensors[index]),
