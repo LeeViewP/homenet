@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homenet/services/motesService.dart';
 import './metricItem.dart';
 import '../services/sensorsService.dart';
 import '../model/metricModel.dart';
@@ -26,6 +27,9 @@ class SensorViewState extends State<SensorView> {
   List<MetricModel> metrics;
 
   List<MetricItem> metricItems;
+
+  List<Mote> motes;
+  MotesService _motesService = new  MotesService();
   // bool isLoading;
   @override
   void initState() {
@@ -34,6 +38,10 @@ class SensorViewState extends State<SensorView> {
     metricItems = new List<MetricItem>();
     service.addChangesListener(widget.sensor.id, (snapshot) {
       updateMetrics();
+    });
+
+    _motesService.addChangesListener( (snapshot) {
+      updateMotes();
     });
     showSave = false;
     // idController = new TextEditingController(text: widget.sensor.id);
@@ -47,6 +55,9 @@ class SensorViewState extends State<SensorView> {
     typeController.addListener(_somethingChanged);
   }
 
+void updateMotes(){
+  _motesService.getAll().then((motes)=> setState(()=>this.motes=motes));
+}
   void updateMetrics() {
     service.getMetrics(widget.sensor.id).then((metrics) {
       setState(() {
