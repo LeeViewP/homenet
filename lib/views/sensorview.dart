@@ -147,6 +147,7 @@ class SensorViewState extends State<SensorView> {
           child: Text(mote.label),
         );
       }).toList();
+      
       return new InputDecorator(
         decoration: const InputDecoration(
           labelText: 'Type',
