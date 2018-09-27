@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './dashboardview.dart';
-import './sensorview.dart';
+import './sensorView.dart';
 import './settingsview.dart';
 
 

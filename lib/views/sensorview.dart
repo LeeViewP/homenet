@@ -37,6 +37,7 @@ class SensorViewState extends State<SensorView> {
     super.initState();
     canRefreshMetrics = true;
     metricItems = new List<MetricItem>();
+    
     motesService.addChangesListener((snapshot) {
       updateMotes();
     });
