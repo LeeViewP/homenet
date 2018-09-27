@@ -3,7 +3,7 @@ import './views/splash.dart';
 import './views/dashboardview.dart';
 import './views/sensorsView.dart';
 import './views/settingsview.dart';
-import './views/homeview.dart';
+import './views/HomePage.dart';
 // import './sensorsModelsView.dart';
 
 class HomeNet extends StatelessWidget {
@@ -34,7 +34,7 @@ class HomeNet extends StatelessWidget {
       // home:new Splash(),
 			initialRoute: '/',
       routes: <String, WidgetBuilder> {
-        HomeView.routeName:  (BuildContext context) => new HomeView(),
+        HomePage.routeName:  (BuildContext context) => new HomePage(),
         DashboardView.routeName: (BuildContext context) => new DashboardView(),
         SensorsView.routeName: (BuildContext context) => new SensorsView(),
         SettingsView.routeName: (BuildContext context) => new SettingsView(),
