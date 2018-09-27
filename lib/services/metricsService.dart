@@ -15,7 +15,7 @@ class MetricsService {
         pin: document['pin'] ?? false,
         graph: document['graph'] ?? false,
         label: document['label'] ?? document.documentID,
-        value: document['value'] ?? 0.toString(),
+        value: document['value'].toString()??'0',
         unit: document['unit'] ?? '',
         updated: new DateTime.fromMillisecondsSinceEpoch(
             document['updated'] ?? DateTime.now().millisecondsSinceEpoch),

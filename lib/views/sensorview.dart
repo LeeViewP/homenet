@@ -141,6 +141,31 @@ void updateMotes(){
       //   const SizedBox(height: 24.0),
       // );
       // returnData.add(_buildTextBox('ID', '', idController, null, false));
+
+
+      // InputDecorator(
+      //           decoration: const InputDecoration(
+      //             labelText: 'Activity',
+      //             hintText: 'Choose an activity',
+      //             contentPadding: EdgeInsets.zero,
+      //           ),
+      //           isEmpty: _activity == null,
+      //           child: DropdownButton<String>(
+      //             value: _activity,
+      //             onChanged: (String newValue) {
+      //               setState(() {
+      //                 _activity = newValue;
+      //               });
+      //             },
+      //             items: _allActivities.map((String value) {
+      //               return DropdownMenuItem<String>(
+      //                 value: value,
+      //                 child: Text(value),
+      //               );
+      //             }).toList(),
+      //           ),
+      //         ),
+
       returnData.add(
         const SizedBox(height: 24.0),
       );
