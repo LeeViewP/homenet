@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:homenet/services/motesService.dart';
+
 import './metricItem.dart';
-import '../services/sensorsService.dart';
 import '../model/metricModel.dart';
-import '../services/metricsService.dart';
 import '../model/sensorModel.dart';
+import '../services/metricsService.dart';
+import '../services/sensorsService.dart';
 
 class SensorView extends StatefulWidget {
   final SensorModel sensor;
@@ -22,27 +23,27 @@ class SensorViewState extends State<SensorView> {
   TextEditingController typeController;
   bool showSave;
   bool canRefreshMetrics;
+  List<MetricItem> metricItems;
   MetricsService service = new MetricsService();
   SensorService sService = new SensorService();
-  List<MetricModel> metrics;
+  MotesService motesService = new MotesService();
 
-  List<MetricItem> metricItems;
+  List<MetricModel> _metrics;
+  List<Mote> _motes;
 
-  List<Mote> motes;
-  MotesService _motesService = new  MotesService();
   // bool isLoading;
   @override
   void initState() {
     super.initState();
-    canRefreshMetrics=true;
+    canRefreshMetrics = true;
     metricItems = new List<MetricItem>();
+    motesService.addChangesListener((snapshot) {
+      updateMotes();
+    });
     service.addChangesListener(widget.sensor.id, (snapshot) {
       updateMetrics();
     });
 
-    _motesService.addChangesListener( (snapshot) {
-      updateMotes();
-    });
     showSave = false;
     // idController = new TextEditingController(text: widget.sensor.id);
     labelController = new TextEditingController(text: widget.sensor.label);
@@ -55,13 +56,18 @@ class SensorViewState extends State<SensorView> {
     typeController.addListener(_somethingChanged);
   }
 
-void updateMotes(){
-  _motesService.getAll().then((motes)=> setState(()=>this.motes=motes));
-}
+  void updateMotes() {
+    motesService.getAll().then((motes) {
+      setState(() {
+        this._motes = motes;
+      });
+    });
+  }
+
   void updateMetrics() {
     service.getMetrics(widget.sensor.id).then((metrics) {
       setState(() {
-        this.metrics = metrics;
+        this._metrics = metrics;
       });
     });
   }
@@ -134,46 +140,50 @@ void updateMotes(){
       ));
     }
 
+    Widget _buildDropdown() {
+      var maps = _motes.map((Mote mote) {
+        return new DropdownMenuItem<String>(
+          value: mote.label,
+          child: Text(mote.label),
+        );
+      }).toList();
+      return new InputDecorator(
+        decoration: const InputDecoration(
+          labelText: 'Type',
+          hintText: 'Choose a type for this sensor',
+          contentPadding: EdgeInsets.zero,
+        ),
+//        isEmpty: typeController.text == null,
+        child: new DropdownButton<String>(
+          value: typeController.text,
+          onChanged: (String newValue) {
+            setState(() {
+              typeController.text = newValue;
+            });
+          },
+          items: maps,
+        ),
+      );
+    }
+
     List<Widget> _buildInitialData() {
       List<Widget> returnData = new List<Widget>();
-
-      // returnData.add(
-      //   const SizedBox(height: 24.0),
-      // );
-      // returnData.add(_buildTextBox('ID', '', idController, null, false));
-
-
-      // InputDecorator(
-      //           decoration: const InputDecoration(
-      //             labelText: 'Activity',
-      //             hintText: 'Choose an activity',
-      //             contentPadding: EdgeInsets.zero,
-      //           ),
-      //           isEmpty: _activity == null,
-      //           child: DropdownButton<String>(
-      //             value: _activity,
-      //             onChanged: (String newValue) {
-      //               setState(() {
-      //                 _activity = newValue;
-      //               });
-      //             },
-      //             items: _allActivities.map((String value) {
-      //               return DropdownMenuItem<String>(
-      //                 value: value,
-      //                 child: Text(value),
-      //               );
-      //             }).toList(),
-      //           ),
-      //         ),
 
       returnData.add(
         const SizedBox(height: 24.0),
       );
-      returnData.add(_buildTextBox(
-        'Type',
-        '',
-        typeController,
-      ));
+      // returnData.add(_buildTextBox('ID', '', idController, null, false));
+
+      returnData.add(_buildDropdown());
+
+      // returnData.add(
+      //   const SizedBox(height: 24.0),
+      // );
+      // returnData.add(_buildTextBox(
+      //   'Type',
+      //   '',
+      //   typeController,
+      // ));
       returnData.add(
         const SizedBox(height: 24.0),
       );
@@ -199,87 +209,87 @@ void updateMotes(){
 
     Container _buildDetails() {
       var childs = _buildInitialData();
-      if(canRefreshMetrics)
-        metricItems = metrics.map((MetricModel model) {
-        return new MetricItem<String>(
-          graph: model.graph,
-          label: model.label,
-          hint: 'Change metric name',
-          pin: model.pin,
-          unit: model.unit,
-          updated: model.updated,
-          value: model.value,
-          valueForEdit: model.label,
-          valueToString: (String value) => value,
-          pinOnPressed: () {
-            setState(() =>
-                service.update(widget.sensor.id, model.id, 'pin', !model.pin));
-          },
-          graphOnPressed: () {
-            setState(() => service.update(
-                widget.sensor.id, model.id, 'graph', !model.graph));
-          },
-          builder: (MetricItem<String> item) {
-            void close() {
-              setState(() {
-                canRefreshMetrics = true;
-                item.isExpanded = false;
-              });
-            }
+      if (canRefreshMetrics)
+        metricItems = _metrics.map((MetricModel model) {
+          return new MetricItem<String>(
+            graph: model.graph,
+            label: model.label,
+            hint: 'Change metric name',
+            pin: model.pin,
+            unit: model.unit,
+            updated: model.updated,
+            value: model.value,
+            valueForEdit: model.label,
+            valueToString: (String value) => value,
+            pinOnPressed: () {
+              setState(() => service.update(
+                  widget.sensor.id, model.id, 'pin', !model.pin));
+            },
+            graphOnPressed: () {
+              setState(() => service.update(
+                  widget.sensor.id, model.id, 'graph', !model.graph));
+            },
+            builder: (MetricItem<String> item) {
+              void close() {
+                setState(() {
+                  canRefreshMetrics = true;
+                  item.isExpanded = false;
+                });
+              }
 
-            return Form(
-              child: Builder(
-                builder: (BuildContext context) {
-                  return CollapsibleBody(
-                    margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                    onSave: () {
-                      Form.of(context).save();
-                      close();
-                    },
-                    onCancel: () {
-                      Form.of(context).reset();
-                      close();
-                    },
-                    onDelete: () async {
-                      // Future<Null> _askedToLead() async {
-                      switch (await showDialog<DialogOptions>(
-                          context: context, builder: _buildAlert)) {
-                        case DialogOptions.AGREE:
-                          service.delete(widget.sensor.id, model.id);
-                          Form.of(context).reset();
-                          close();
-                          break;
-                        case DialogOptions.DISAGREE:
-                          break;
-                      }
-                      // };
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8.0),
-                      child: TextFormField(
-                        controller: item.textController,
-                        decoration: InputDecoration(
-                            border: new OutlineInputBorder(),
-                            hintText: item.hint,
-                            labelText: 'Metric label' //item.label,
-                            ),
-                        // autofocus: true,
-                        onSaved: (String value) {
-                          service.update(
-                              widget.sensor.id, model.id, 'label', value);
-                          // item.valueForEdit = value;
-                        },
+              return Form(
+                child: Builder(
+                  builder: (BuildContext context) {
+                    return CollapsibleBody(
+                      margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                      onSave: () {
+                        Form.of(context).save();
+                        close();
+                      },
+                      onCancel: () {
+                        Form.of(context).reset();
+                        close();
+                      },
+                      onDelete: () async {
+                        // Future<Null> _askedToLead() async {
+                        switch (await showDialog<DialogOptions>(
+                            context: context, builder: _buildAlert)) {
+                          case DialogOptions.AGREE:
+                            service.delete(widget.sensor.id, model.id);
+                            Form.of(context).reset();
+                            close();
+                            break;
+                          case DialogOptions.DISAGREE:
+                            break;
+                        }
+                        // };
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 8.0),
+                        child: TextFormField(
+                          controller: item.textController,
+                          decoration: InputDecoration(
+                              border: new OutlineInputBorder(),
+                              hintText: item.hint,
+                              labelText: 'Metric label' //item.label,
+                              ),
+                          // autofocus: true,
+                          onSaved: (String value) {
+                            service.update(
+                                widget.sensor.id, model.id, 'label', value);
+                            // item.valueForEdit = value;
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            );
-          },
-        );
-      }).toList();
-      
+                    );
+                  },
+                ),
+              );
+            },
+          );
+        }).toList();
+
       childs.add(new Flex(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
@@ -328,47 +338,47 @@ void updateMotes(){
         iconTheme: IconThemeData(color: theme.primaryColor),
         actions: <Widget>[
           PopupMenuButton<String>(
-             onSelected: showMenuSelection,
-                         itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
-                           const PopupMenuItem<String>(
-                             value: 'DELETE',
-                             child: ListTile(
-                                 leading: Icon(Icons.delete),
-                                 title: Text('Delete sensor'),
-                                 )
-                           ),
-                         ],)
-                     ],
-                   ),
-                   body: _buildDetails(),
-                   floatingActionButton: showSave
-                       ? new FloatingActionButton(
-                           child: const Icon(Icons.save),
-                           onPressed: () {
-                             if (widget.sensor.descr != descrController.text)
-                               sService.update<String>(
-                                   widget.sensor.id, 'descr', descrController.text);
-                             if (widget.sensor.label != labelController.text)
-                               sService.update<String>(
-                                   widget.sensor.id, 'label', labelController.text);
-                             if (widget.sensor.type != typeController.text)
-                               sService.update<String>(
-                                   widget.sensor.id, 'type', typeController.text);
-             
-                             showSave = false;
-                             Navigator.pop(context);
-                           },
-                         )
-                       : null,
-                 );
-               }
-             
-               void showMenuSelection(String value) {
-                 switch(value){
-                   case 'DELETE':
-                    sService.delete(widget.sensor);
-                    Navigator.pop(context);
-                   break;
-                 }
+            onSelected: showMenuSelection,
+            itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
+                  const PopupMenuItem<String>(
+                      value: 'DELETE',
+                      child: ListTile(
+                        leading: Icon(Icons.delete),
+                        title: Text('Delete sensor'),
+                      )),
+                ],
+          )
+        ],
+      ),
+      body: _buildDetails(),
+      floatingActionButton: showSave
+          ? new FloatingActionButton(
+              child: const Icon(Icons.save),
+              onPressed: () {
+                if (widget.sensor.descr != descrController.text)
+                  sService.update<String>(
+                      widget.sensor.id, 'descr', descrController.text);
+                if (widget.sensor.label != labelController.text)
+                  sService.update<String>(
+                      widget.sensor.id, 'label', labelController.text);
+                if (widget.sensor.type != typeController.text)
+                  sService.update<String>(
+                      widget.sensor.id, 'type', typeController.text);
+
+                showSave = false;
+                Navigator.pop(context);
+              },
+            )
+          : null,
+    );
+  }
+
+  void showMenuSelection(String value) {
+    switch (value) {
+      case 'DELETE':
+        sService.delete(widget.sensor);
+        Navigator.pop(context);
+        break;
+    }
   }
 }

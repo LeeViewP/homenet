@@ -35,7 +35,7 @@ allsensors = new SensorsBusinessLogic();
       ),
       body: new ListView.builder(
         itemBuilder: (BuildContext context, int index) =>
-              new ListTile(title: new Text(sensors[index].Description)),
+              new ListTile(title: new Text(sensors[index].description)),
           itemCount: sensors == null ? 0 : sensors.length,
           // itemBuilder: allsensors.sensors.map(
           //     (SensorBusinessLogic sensor){ return new ListTile(title: new Text(sensor.Id));}

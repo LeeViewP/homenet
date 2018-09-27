@@ -98,26 +98,26 @@ class DashboardViewState extends State<DashboardView>
         tabs: graphTabList,
       ),
     );
-    Widget graphsContent = new Flexible(
-      child: new TabBarView(
-        controller: _controller,
-        // children: graphTabList.map((Tab tab){
-        //   return new Center(child: new Text(tab.text));
-        // }).toList()
-        children: [
-          new Container(child: new Icon(Icons.ac_unit)),
-          new Container(child: new Icon(Icons.ac_unit)),
-          new Container(child: new Icon(Icons.ac_unit)),
-          new Container(child: new Icon(Icons.ac_unit)),
-        ],
-      ),
-    );
+    // Widget graphsContent = new Flexible(
+    //   child: new TabBarView(
+    //     controller: _controller,
+    //     // children: graphTabList.map((Tab tab){
+    //     //   return new Center(child: new Text(tab.text));
+    //     // }).toList()
+    //     children: [
+    //       new Container(child: new Icon(Icons.ac_unit)),
+    //       new Container(child: new Icon(Icons.ac_unit)),
+    //       new Container(child: new Icon(Icons.ac_unit)),
+    //       new Container(child: new Icon(Icons.ac_unit)),
+    //     ],
+    //   ),
+    // );
 
-    Widget graphs = new Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[graphTabs, graphsContent],
-    );
+    // Widget graphs = new Column(
+    //   mainAxisSize: MainAxisSize.min,
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: <Widget>[graphTabs, graphsContent],
+    // );
 
     var theme = Theme.of(context);
     var titleTextStyle = new TextStyle(fontSize: theme.textTheme.title.fontSize, color:theme.primaryColor );

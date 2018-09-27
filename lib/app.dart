@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './views/splash.dart';
+// import './views/splash.dart';
 import './views/dashboardview.dart';
 import './views/sensorsView.dart';
 import './views/settingsview.dart';
@@ -10,7 +10,7 @@ class HomeNet extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {
 		return new MaterialApp(
-			debugShowCheckedModeBanner: false,
+			// debugShowCheckedModeBanner: false,
 			title: 'homeNet.ai',
 			theme: new ThemeData(
         // This is the theme of your application.
@@ -24,13 +24,14 @@ class HomeNet extends StatelessWidget {
         //  brightness: Brightness.dark,
         primarySwatch: Colors.green,
         accentColor: Colors.redAccent,
-        
+       
 				primaryTextTheme: const TextTheme(
 					headline: const TextStyle(
 						color: Colors.white
 					)
 				)
 			),
+    
       // home:new Splash(),
 			initialRoute: '/',
       routes: <String, WidgetBuilder> {
@@ -38,6 +39,7 @@ class HomeNet extends StatelessWidget {
         DashboardView.routeName: (BuildContext context) => new DashboardView(),
         SensorsView.routeName: (BuildContext context) => new SensorsView(),
         SettingsView.routeName: (BuildContext context) => new SettingsView(),
+        '/sensorView':(BuildContext context) {},
         // "/":(BuildContext context) => new Splash(),
         // SensorsViewModel.routeName:(BuildContext context)=>new SensorsViewModel(),
         // SensorDetails.routeName: (BuildContext context)=> new SensorDetails(),
