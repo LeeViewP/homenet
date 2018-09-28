@@ -39,7 +39,7 @@ class HomeNet extends StatelessWidget {
         DashboardView.routeName: (BuildContext context) => new DashboardView(),
         SensorsView.routeName: (BuildContext context) => new SensorsView(),
         SettingsView.routeName: (BuildContext context) => new SettingsView(),
-        '/sensorView':(BuildContext context) {},
+        // '/sensorView':(BuildContext context) {},
         // "/":(BuildContext context) => new Splash(),
         // SensorsViewModel.routeName:(BuildContext context)=>new SensorsViewModel(),
         // SensorDetails.routeName: (BuildContext context)=> new SensorDetails(),

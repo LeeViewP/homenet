@@ -38,6 +38,9 @@ class SensorViewState extends State<SensorView> {
     canRefreshMetrics = true;
     metricItems = new List<MetricItem>();
     
+    this._metrics=new List<MetricModel>();
+    this._motes = new List<Mote>();
+
     motesService.addChangesListener((snapshot) {
       updateMotes();
     });
@@ -144,18 +147,19 @@ class SensorViewState extends State<SensorView> {
     Widget _buildDropdown() {
       var maps = _motes.map((Mote mote) {
         return new DropdownMenuItem<String>(
-          value: mote.label,
+          value: mote.id,
           child: Text(mote.label),
         );
       }).toList();
-      
-      return new InputDecorator(
-        decoration: const InputDecoration(
+
+      return new DropdownButtonHideUnderline(child: new InputDecorator(
+        decoration: new InputDecoration(
+           border: new OutlineInputBorder(),
           labelText: 'Type',
-          hintText: 'Choose a type for this sensor',
-          contentPadding: EdgeInsets.zero,
+          // hintText: 'Choose a type for this sensor',
+          contentPadding: EdgeInsets.only(left:12.0, right:12.0, top:6.0, bottom:6.0),
         ),
-//        isEmpty: typeController.text == null,
+        isEmpty: typeController.text == null,
         child: new DropdownButton<String>(
           value: typeController.text,
           onChanged: (String newValue) {
@@ -165,7 +169,7 @@ class SensorViewState extends State<SensorView> {
           },
           items: maps,
         ),
-      );
+      ));
     }
 
     List<Widget> _buildInitialData() {
@@ -325,6 +329,17 @@ class SensorViewState extends State<SensorView> {
       );
     }
 
+    if (_metrics.length == 0 || _motes.length==0)
+      return new Scaffold(
+        body: Container(
+          child:
+          new LinearProgressIndicator(
+            value: null,
+            valueColor:
+                AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+          ),
+        ),
+      );
     var theme = Theme.of(context);
     var titleTextStyle = new TextStyle(
         fontSize: theme.textTheme.title.fontSize, color: theme.primaryColor);
@@ -347,6 +362,12 @@ class SensorViewState extends State<SensorView> {
                       child: ListTile(
                         leading: Icon(Icons.delete),
                         title: Text('Delete sensor'),
+                      )),
+                  const PopupMenuItem<String>(
+                      value: 'HIDE',
+                      child: ListTile(
+                        leading: Icon(Icons.remove_red_eye),
+                        title: Text('Hide sensor'),
                       )),
                 ],
           )

@@ -8,6 +8,6 @@ build/
 
 .flutter-plugins
 lib/samples/
-android/
-ios/
+# android/
+# ios/
 oldCode/
