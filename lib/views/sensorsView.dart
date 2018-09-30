@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../views/sensorCard.dart';
+
+import './loadingView.dart';
+import './sensorCard.dart';
 import '../model/sensorModel.dart';
 import '../services/sensorsService.dart';
 
@@ -12,6 +14,7 @@ class SensorsView extends StatefulWidget {
 class SensorsViewState extends State<SensorsView> {
    SensorService sensorService = new SensorService();
   List<SensorModel> sensors;
+  bool _isLoading = true;
   @override
   void initState() {
     super.initState();
@@ -25,13 +28,17 @@ class SensorsViewState extends State<SensorsView> {
     sensorService.getAllSensors().then((sensors) {
       setState(() {
         this.sensors = sensors;
+        _isLoading =false;
       });
     });
   }
 
   Widget build(BuildContext context) {
+     if(_isLoading) return new LoadingView(title:'Sensors');
+
     var theme = Theme.of(context);
     var titleTextStyle = new TextStyle(fontSize: theme.textTheme.title.fontSize, color:theme.primaryColor );
+
     return Scaffold(
       appBar: new AppBar(
         backgroundColor: theme.scaffoldBackgroundColor,

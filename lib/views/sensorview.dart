@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:homenet/services/motesService.dart';
 
+import './loadingView.dart';
 import './metricItem.dart';
+import '../model/moteModel.dart';
 import '../model/metricModel.dart';
 import '../model/sensorModel.dart';
 import '../services/metricsService.dart';
 import '../services/sensorsService.dart';
+import '../services/motesService.dart';
 
 class SensorView extends StatefulWidget {
   final SensorModel sensor;
@@ -29,7 +31,7 @@ class SensorViewState extends State<SensorView> {
   MotesService motesService = new MotesService();
 
   List<MetricModel> _metrics;
-  List<Mote> _motes;
+  List<MoteModel> _motes;
 
   // bool isLoading;
   @override
@@ -37,9 +39,9 @@ class SensorViewState extends State<SensorView> {
     super.initState();
     canRefreshMetrics = true;
     metricItems = new List<MetricItem>();
-    
-    this._metrics=new List<MetricModel>();
-    this._motes = new List<Mote>();
+
+    this._metrics = new List<MetricModel>();
+    this._motes = new List<MoteModel>();
 
     motesService.addChangesListener((snapshot) {
       updateMotes();
@@ -123,6 +125,7 @@ class SensorViewState extends State<SensorView> {
 
   @override
   Widget build(BuildContext context) {
+    if (_metrics.length == 0 || _motes.length == 0) return new LoadingView();
     var paddings = const EdgeInsets.symmetric(horizontal: 16.0);
 
     Widget _buildTextBox(
@@ -145,19 +148,21 @@ class SensorViewState extends State<SensorView> {
     }
 
     Widget _buildDropdown() {
-      var maps = _motes.map((Mote mote) {
+      var maps = _motes.map((MoteModel mote) {
         return new DropdownMenuItem<String>(
           value: mote.id,
           child: Text(mote.label),
         );
       }).toList();
 
-      return new DropdownButtonHideUnderline(child: new InputDecorator(
+      return new DropdownButtonHideUnderline(
+          child: new InputDecorator(
         decoration: new InputDecoration(
-           border: new OutlineInputBorder(),
+          border: new OutlineInputBorder(),
           labelText: 'Type',
           // hintText: 'Choose a type for this sensor',
-          contentPadding: EdgeInsets.only(left:12.0, right:12.0, top:6.0, bottom:6.0),
+          contentPadding:
+              EdgeInsets.only(left: 12.0, right: 12.0, top: 6.0, bottom: 6.0),
         ),
         isEmpty: typeController.text == null,
         child: new DropdownButton<String>(
@@ -329,17 +334,6 @@ class SensorViewState extends State<SensorView> {
       );
     }
 
-    if (_metrics.length == 0 || _motes.length==0)
-      return new Scaffold(
-        body: Container(
-          child:
-          new LinearProgressIndicator(
-            value: null,
-            valueColor:
-                AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
-          ),
-        ),
-      );
     var theme = Theme.of(context);
     var titleTextStyle = new TextStyle(
         fontSize: theme.textTheme.title.fontSize, color: theme.primaryColor);
@@ -358,16 +352,16 @@ class SensorViewState extends State<SensorView> {
             onSelected: showMenuSelection,
             itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
                   const PopupMenuItem<String>(
-                      value: 'DELETE',
-                      child: ListTile(
-                        leading: Icon(Icons.delete),
-                        title: Text('Delete sensor'),
-                      )),
-                  const PopupMenuItem<String>(
                       value: 'HIDE',
                       child: ListTile(
                         leading: Icon(Icons.remove_red_eye),
-                        title: Text('Hide sensor'),
+                        title: Text('Hide'),
+                      )),
+                  const PopupMenuItem<String>(
+                      value: 'DELETE',
+                      child: ListTile(
+                        leading: Icon(Icons.delete),
+                        title: Text('Delete'),
                       )),
                 ],
           )
