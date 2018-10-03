@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class SettingsService {
   final CollectionReference collectionReference =
@@ -99,23 +100,33 @@ class SettingsItem extends SettingsModel {
 
 class TextTypeSetting extends SettingsItem {
   String value;
+  TextEditingController controller;
   TextTypeSetting(
       String id, bool exposed, bool editable, description, {this.value})
-      : super(id, exposed, editable, description);
+      : super(id, exposed, editable, description) {
+        controller = TextEditingController(text: value); 
+      }
 }
 
 class PasswordTypeSetting extends SettingsItem {
   String value;
+  TextEditingController controller;
   PasswordTypeSetting(
       String id, bool exposed, bool editable, description, {this.value})
-      : super(id, exposed, editable, description);
+      : super(id, exposed, editable, description)
+       {
+        controller = TextEditingController(text: value); 
+      }
 }
 
 class EmailTypeSetting extends SettingsItem {
   String value;
+  TextEditingController controller;
   EmailTypeSetting(
       String id, bool exposed, bool editable, description, {this.value})
-      : super(id, exposed, editable, description);
+      : super(id, exposed, editable, description) {
+        controller = TextEditingController(text: value); 
+      }
 }
 
 class CheckBoxTypeSetting extends SettingsItem {
