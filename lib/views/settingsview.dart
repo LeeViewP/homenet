@@ -107,7 +107,7 @@ class SettingsViewState extends State<SettingsView> {
             enabled: settingItem.editable,
           ),
           keyboardType: TextInputType.number,
-          controller:
+          controller: 
               new TextEditingController(text: settingItem.value.toString()),
           // inputFormatters: <TextInputFormatter> [
           //           WhitelistingTextInputFormatter.digitsOnly,]
@@ -139,7 +139,8 @@ class SettingsViewState extends State<SettingsView> {
               value: item.value,
               onChanged: (bool value) {
                 setState(() {
-                  item.value = value;
+                  _service.update<bool>(groupId, item.id, value);
+                  // item.value = value;
                 });
               },
             ));
@@ -170,6 +171,8 @@ class SettingsViewState extends State<SettingsView> {
                       ],
                     ))) {
               case DialogOptions.AGREE:
+                  _service.update<num>(groupId, item.id, item.value);
+
                 // service.delete(widget.sensor.id, model.id);
                 // Form.of(context).reset();
                 // close();
@@ -207,6 +210,7 @@ class SettingsViewState extends State<SettingsView> {
                       ],
                     ))) {
               case DialogOptions.AGREE:
+                _service.update(groupId, item.id, item.controller.text);
                 // service.delete(widget.sensor.id, model.id);
                 // Form.of(context).reset();
                 // close();
