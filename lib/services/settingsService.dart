@@ -15,11 +15,11 @@ class SettingsService {
       document.data.forEach((id, object) {
         if (object is! bool) {
           switch (object['type'] ?? 'text') {
-            case 'text':
-              list.add(new TextTypeSetting(id, object['exposed'] ?? true,
-                  object['editable'] ?? true, object['description'] ?? '',
-                  value: object['value'] ?? ''));
-              break;
+            // case 'text':
+            //   list.add(new TextTypeSetting(id, object['exposed'] ?? true,
+            //       object['editable'] ?? true, object['description'] ?? '',
+            //       value: object['value'] ?? ''));
+            //   break;
             case 'password':
               list.add(new PasswordTypeSetting(id, object['exposed'] ?? true,
                   object['editable'] ?? true, object['description'] ?? '',
@@ -47,6 +47,11 @@ class SettingsService {
                   min: object['min'] ?? 0.0,
                   max: object['max'] ?? 0.0));
               break;
+            default: //text is default
+              list.add(new TextTypeSetting(id, object['exposed'] ?? true,
+                  object['editable'] ?? true, object['description'] ?? '',
+                  value: object['value'] ?? ''));
+              break;
           }
         }
       });
@@ -59,16 +64,18 @@ class SettingsService {
     }).toList();
   }
 
-  Future<Null> update<T>(
-      String settingId, String settingItemId, T value) async {
-    DocumentReference documentReference =
-        collectionReference.document(settingId);
+  Future<Null> update<T>(String settingId, String settingItemId,String settingItemProperty, T value) async 
+  {
+    DocumentReference documentReference = collectionReference.document(settingId);
+    // if (settingItemProperty!=null)
+    //   documentReference = collectionReference.document('${settingId}/{settingItemId}');
     Firestore.instance.runTransaction((transaction) async {
       //Get Document snapshoot
-      DocumentSnapshot freshSnapshoot =
-          await transaction.get(documentReference);
-      await transaction
-          .update(freshSnapshoot.reference, {settingItemId: value});
+      
+      DocumentSnapshot freshSnapshoot = await transaction.get(documentReference);
+      var objProperty = freshSnapshoot.data[settingItemId];
+      objProperty[settingItemProperty] = value;
+      await transaction.update(freshSnapshoot.reference, {settingItemId: objProperty});
     });
   }
 

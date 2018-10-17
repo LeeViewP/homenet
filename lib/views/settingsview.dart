@@ -138,10 +138,10 @@ class SettingsViewState extends State<SettingsView> {
               activeColor: theme.primaryColor,
               value: item.value,
               onChanged: (bool value) {
-                setState(() {
-                  _service.update<bool>(groupId, item.id, value);
+                // setState(() {
+                  _service.update<bool>(groupId, item.id, 'value', value);
                   // item.value = value;
-                });
+                // });
               },
             ));
       else if (item is NumberTypeSetting || item is RangeTypeSetting)
@@ -171,7 +171,7 @@ class SettingsViewState extends State<SettingsView> {
                       ],
                     ))) {
               case DialogOptions.AGREE:
-                  _service.update<num>(groupId, item.id, item.value);
+                  _service.update<num>(groupId, item.id,'value', item.value);
 
                 // service.delete(widget.sensor.id, model.id);
                 // Form.of(context).reset();
@@ -210,7 +210,8 @@ class SettingsViewState extends State<SettingsView> {
                       ],
                     ))) {
               case DialogOptions.AGREE:
-                _service.update(groupId, item.id, item.controller.text);
+                String itemId = item.id;
+                _service.update<String>(groupId, itemId,'value', item.controller.text);
                 // service.delete(widget.sensor.id, model.id);
                 // Form.of(context).reset();
                 // close();
